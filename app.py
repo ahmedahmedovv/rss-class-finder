@@ -23,15 +23,8 @@ if not supabase_url or not supabase_key:
     raise ValueError("Missing required environment variables: SUPABASE_URL and SUPABASE_KEY must be set")
 
 try:
-    supabase: Client = create_client(
-        supabase_url=supabase_url,
-        supabase_key=supabase_key,
-        options={
-            'headers': {
-                'Authorization': f'Bearer {supabase_key}'
-            }
-        }
-    )
+    # Simplified client initialization
+    supabase = create_client(supabase_url, supabase_key)
 except Exception as e:
     print(f"Error initializing Supabase client: {str(e)}")
     raise
