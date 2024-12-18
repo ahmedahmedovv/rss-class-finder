@@ -49,34 +49,33 @@ def update_rss_feed(url, class_name, articles):
     return fg.rss_str(pretty=True)
 
 def main():
-    # Get all existing feeds from Supabase storage
     files = supabase.storage.from_('class-analysis').list()
+    print(f"Total files found: {len(files)}")
     
     for file in files:
         try:
-            # Parse filename to get original URL and class name
             filename = file['name']
+            print(f"\nProcessing file: {filename}")
+            
             if not filename.endswith('.xml'):
+                print(f"Skipping: Not an XML file")
                 continue
                 
             parts = filename.split('_class_')
             if len(parts) != 2:
+                print(f"Skipping: Invalid filename format")
                 continue
-                
+            
             domain = parts[0]
             class_name = parts[1].split('_')[0]
             
-            # Reconstruct URL (assuming http/https)
             url = f"https://{domain}"
             
-            # Get fresh content
             articles = analyze_page(url, class_name)
             
             if articles:
-                # Generate new RSS feed
                 rss_content = update_rss_feed(url, class_name, articles)
                 
-                # Update the file in Supabase
                 supabase.storage \
                     .from_('class-analysis') \
                     .update(filename, rss_content)
