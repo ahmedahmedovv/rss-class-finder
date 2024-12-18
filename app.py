@@ -22,7 +22,19 @@ supabase_key = os.getenv('SUPABASE_KEY')
 if not supabase_url or not supabase_key:
     raise ValueError("Missing required environment variables: SUPABASE_URL and SUPABASE_KEY must be set")
 
-supabase: Client = create_client(supabase_url, supabase_key)
+try:
+    supabase: Client = create_client(
+        supabase_url=supabase_url,
+        supabase_key=supabase_key,
+        options={
+            'headers': {
+                'Authorization': f'Bearer {supabase_key}'
+            }
+        }
+    )
+except Exception as e:
+    print(f"Error initializing Supabase client: {str(e)}")
+    raise
 
 def analyze_classes(html_content):
     # Parse HTML content
@@ -90,8 +102,11 @@ def save_to_supabase():
         data = request.json
         class_name = data.get('className')
         articles = data.get('articles')
-        base_url = data.get('baseUrl')  # Get base URL from request
+        base_url = data.get('baseUrl')
         
+        if not all([class_name, articles, base_url]):
+            return jsonify({'error': 'Missing required fields'}), 400
+
         # Generate RSS feed with base URL
         rss_content = create_rss_feed(class_name, articles, base_url)
         
@@ -99,25 +114,29 @@ def save_to_supabase():
         domain = urlparse(base_url).netloc
         filename = f"{domain}_class_{class_name}_{int(time.time())}.xml"
         
-        # Upload to Supabase Storage
-        result = supabase.storage \
-            .from_('class-analysis') \
-            .upload(filename, rss_content)
+        try:
+            # Upload to Supabase Storage
+            result = supabase.storage \
+                .from_('class-analysis') \
+                .upload(filename, rss_content)
+                
+            # Get public URL
+            file_url = supabase.storage \
+                .from_('class-analysis') \
+                .get_public_url(filename)
+                
+            return jsonify({
+                'success': True,
+                'url': file_url,
+                'format': 'RSS'
+            })
+        except Exception as storage_error:
+            print(f"Supabase storage error: {str(storage_error)}")
+            return jsonify({'error': 'Storage operation failed'}), 500
             
-        # Get public URL
-        file_url = supabase.storage \
-            .from_('class-analysis') \
-            .get_public_url(filename)
-            
-        return jsonify({
-            'success': True,
-            'url': file_url,
-            'format': 'RSS'
-        })
     except Exception as e:
+        print(f"General error: {str(e)}")
         return jsonify({'error': str(e)}), 400
 
 if __name__ == '__main__':
-    # Use PORT environment variable if available (for render.com)
-    port = int(os.getenv('PORT', 5000))
-    app.run(host='0.0.0.0', port=port) 
+    app.run(debug=True) 
