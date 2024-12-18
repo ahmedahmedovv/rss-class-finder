@@ -6,6 +6,9 @@ from supabase import create_client, Client
 from dotenv import load_dotenv
 import json
 import time
+from feedgen.feed import FeedGenerator
+from datetime import datetime
+import pytz
 
 load_dotenv()
 
@@ -45,6 +48,25 @@ def analyze_classes(html_content):
     
     return filtered_content
 
+def create_rss_feed(class_name, articles):
+    fg = FeedGenerator()
+    fg.title(f'HTML Class Content: {class_name}')
+    fg.description(f'Content extracted from HTML elements with class "{class_name}"')
+    fg.link(href='http://example.com')  # Replace with your actual website
+    fg.language('en')
+    
+    # Set feed timestamp
+    current_time = datetime.now(pytz.UTC)
+    
+    for article in articles:
+        fe = fg.add_entry()
+        fe.title(article[:50] + '...' if len(article) > 50 else article)
+        fe.description(article)
+        fe.link(href='http://example.com')  # Replace with relevant link
+        fe.pubDate(current_time)
+    
+    return fg.rss_str(pretty=True)
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -66,16 +88,16 @@ def save_to_supabase():
         class_name = data.get('className')
         articles = data.get('articles')
         
-        # Create a unique filename
-        filename = f"class_{class_name}_{int(time.time())}.json"
+        # Generate RSS feed
+        rss_content = create_rss_feed(class_name, articles)
         
-        # Convert data to JSON string
-        json_data = json.dumps({class_name: articles}, indent=2)
+        # Create a unique filename
+        filename = f"class_{class_name}_{int(time.time())}.xml"
         
         # Upload to Supabase Storage
         result = supabase.storage \
             .from_('class-analysis') \
-            .upload(filename, json_data.encode())
+            .upload(filename, rss_content)
             
         # Get public URL
         file_url = supabase.storage \
@@ -84,7 +106,8 @@ def save_to_supabase():
             
         return jsonify({
             'success': True,
-            'url': file_url
+            'url': file_url,
+            'format': 'RSS'
         })
     except Exception as e:
         return jsonify({'error': str(e)}), 400

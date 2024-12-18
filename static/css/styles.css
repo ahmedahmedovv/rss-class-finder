@@ -12,14 +12,39 @@
 
 .storage-link {
     margin-left: 10px;
+    display: flex;
+    align-items: center;
 }
 
 .storage-link a {
-    color: #4CAF50;
+    color: #FF6600;  /* RSS orange */
     text-decoration: none;
     font-size: 0.9em;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 .storage-link a:hover {
     text-decoration: underline;
+}
+
+.rss-icon {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+}
+
+.export-button {
+    padding: 5px 15px;
+    background-color: #FF6600;  /* Changed to RSS orange */
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-left: 15px;
+}
+
+.export-button:hover {
+    background-color: #E65C00;
 } 

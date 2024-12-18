@@ -67,7 +67,6 @@ function displayResults(results) {
 }
 
 function exportClass(className, articles) {
-    // Send to Supabase storage through Flask backend
     fetch('/save-to-supabase', {
         method: 'POST',
         headers: {
@@ -84,17 +83,24 @@ function exportClass(className, articles) {
             // Create a clickable link to the stored file
             const linkDiv = document.createElement('div');
             linkDiv.className = 'storage-link';
+            
             const link = document.createElement('a');
             link.href = data.url;
             link.target = '_blank';
-            link.textContent = 'View Stored Results';
+            link.innerHTML = '<img src="/static/img/rss-icon.png" alt="RSS" class="rss-icon"> Subscribe to RSS Feed';
             linkDiv.appendChild(link);
             
             // Find the corresponding class container and append the link
             const classContainers = document.querySelectorAll('.class-container');
             for (const container of classContainers) {
                 if (container.querySelector('.class-name').textContent === `Class: ${className}`) {
-                    container.querySelector('.class-header').appendChild(linkDiv);
+                    const header = container.querySelector('.class-header');
+                    // Remove existing link if any
+                    const existingLink = header.querySelector('.storage-link');
+                    if (existingLink) {
+                        existingLink.remove();
+                    }
+                    header.appendChild(linkDiv);
                     break;
                 }
             }
