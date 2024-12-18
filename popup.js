@@ -56,6 +56,4 @@ function exportClass(className, articles) {
     
     URL.revokeObjectURL(url);
     document.body.removeChild(a);
-    
-    alert(`Class "${className}" exported successfully!`);
 } 
