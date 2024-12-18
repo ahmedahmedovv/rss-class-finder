@@ -67,6 +67,9 @@ function displayResults(results) {
 }
 
 function exportClass(className, articles) {
+    // Get base URL from the input field
+    const baseUrl = new URL(document.getElementById('urlInput').value).origin;
+    
     fetch('/save-to-supabase', {
         method: 'POST',
         headers: {
@@ -74,28 +77,41 @@ function exportClass(className, articles) {
         },
         body: JSON.stringify({
             className: className,
-            articles: articles
+            articles: articles,
+            baseUrl: baseUrl
         })
     })
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            // Create a clickable link to the stored file
+            // Create a container for both RSS and storage links
             const linkDiv = document.createElement('div');
             linkDiv.className = 'storage-link';
             
-            const link = document.createElement('a');
-            link.href = data.url;
-            link.target = '_blank';
-            link.innerHTML = '<img src="/static/img/rss-icon.png" alt="RSS" class="rss-icon"> Subscribe to RSS Feed';
-            linkDiv.appendChild(link);
+            // RSS Feed Link
+            const rssLink = document.createElement('a');
+            rssLink.href = data.url;
+            rssLink.target = '_blank';
+            rssLink.innerHTML = '<img src="/static/img/rss-icon.png" alt="RSS" class="rss-icon"> Subscribe to RSS Feed';
             
-            // Find the corresponding class container and append the link
+            // Storage URL Link
+            const storageLink = document.createElement('a');
+            storageLink.href = data.url;
+            storageLink.target = '_blank';
+            storageLink.className = 'storage-url';
+            storageLink.textContent = `Storage URL: ${data.url}`;
+            
+            // Add both links to container
+            linkDiv.appendChild(rssLink);
+            linkDiv.appendChild(document.createElement('br'));
+            linkDiv.appendChild(storageLink);
+            
+            // Find the corresponding class container and append the links
             const classContainers = document.querySelectorAll('.class-container');
             for (const container of classContainers) {
                 if (container.querySelector('.class-name').textContent === `Class: ${className}`) {
                     const header = container.querySelector('.class-header');
-                    // Remove existing link if any
+                    // Remove existing links if any
                     const existingLink = header.querySelector('.storage-link');
                     if (existingLink) {
                         existingLink.remove();

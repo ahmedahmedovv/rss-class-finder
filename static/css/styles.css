@@ -47,4 +47,16 @@
 
 .export-button:hover {
     background-color: #E65C00;
+}
+
+.storage-url {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.9em;
+    color: #666;
+    text-decoration: none;
+}
+
+.storage-url:hover {
+    text-decoration: underline;
 } 

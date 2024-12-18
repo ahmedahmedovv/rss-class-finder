@@ -9,6 +9,7 @@ import time
 from feedgen.feed import FeedGenerator
 from datetime import datetime
 import pytz
+from urllib.parse import urlparse
 
 load_dotenv()
 
@@ -48,21 +49,20 @@ def analyze_classes(html_content):
     
     return filtered_content
 
-def create_rss_feed(class_name, articles):
+def create_rss_feed(class_name, articles, base_url):
     fg = FeedGenerator()
     fg.title(f'HTML Class Content: {class_name}')
     fg.description(f'Content extracted from HTML elements with class "{class_name}"')
-    fg.link(href='http://example.com')  # Replace with your actual website
+    fg.link(href=base_url)  # Use actual base URL
     fg.language('en')
     
-    # Set feed timestamp
     current_time = datetime.now(pytz.UTC)
     
     for article in articles:
         fe = fg.add_entry()
         fe.title(article[:50] + '...' if len(article) > 50 else article)
         fe.description(article)
-        fe.link(href='http://example.com')  # Replace with relevant link
+        fe.link(href=base_url)  # Use actual base URL
         fe.pubDate(current_time)
     
     return fg.rss_str(pretty=True)
@@ -87,12 +87,14 @@ def save_to_supabase():
         data = request.json
         class_name = data.get('className')
         articles = data.get('articles')
+        base_url = data.get('baseUrl')  # Get base URL from request
         
-        # Generate RSS feed
-        rss_content = create_rss_feed(class_name, articles)
+        # Generate RSS feed with base URL
+        rss_content = create_rss_feed(class_name, articles, base_url)
         
-        # Create a unique filename
-        filename = f"class_{class_name}_{int(time.time())}.xml"
+        # Create filename using base URL
+        domain = urlparse(base_url).netloc
+        filename = f"{domain}_class_{class_name}_{int(time.time())}.xml"
         
         # Upload to Supabase Storage
         result = supabase.storage \
