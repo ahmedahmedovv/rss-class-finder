@@ -9,7 +9,7 @@ import time
 from feedgen.feed import FeedGenerator
 from datetime import datetime
 import pytz
-from urllib.parse import urlparse
+from urllib.parse import urlparse, quote
 
 load_dotenv()
 
@@ -59,9 +59,15 @@ def analyze_classes(html_content):
 
 def create_rss_feed(class_name, articles, url):
     fg = FeedGenerator()
+    
+    # Ensure URL is properly formatted
+    parsed_url = urlparse(url)
+    if not parsed_url.scheme:
+        url = 'https://' + url
+    
     fg.title(f'HTML Class Content: {class_name}')
     fg.description(f'Content extracted from HTML elements with class "{class_name}"')
-    fg.link(href=url)  # Now using full URL instead of base URL
+    fg.link(href=url)
     fg.language('en')
     
     current_time = datetime.now(pytz.UTC)
@@ -70,7 +76,7 @@ def create_rss_feed(class_name, articles, url):
         fe = fg.add_entry()
         fe.title(article[:50] + '...' if len(article) > 50 else article)
         fe.description(article)
-        fe.link(href=url)  # Now using full URL instead of base URL
+        fe.link(href=url)
         fe.pubDate(current_time)
     
     return fg.rss_str(pretty=True)
@@ -96,19 +102,19 @@ def save_to_supabase():
         class_name = data.get('className')
         articles = data.get('articles')
         url = data.get('url')
-        url_for_filename = data.get('urlForFilename')
         
-        if not all([class_name, articles, url, url_for_filename]):
+        # Create filename from full URL
+        parsed_url = urlparse(url)
+        # Remove any slashes and create a flat filename
+        filename = f"{parsed_url.netloc}{parsed_url.path}".replace('/', '_').rstrip('_')
+        # Add class name and timestamp
+        filename = f"{filename}_class_{class_name}_{int(time.time())}.xml"
+        
+        if not all([class_name, articles, url]):
             return jsonify({'error': 'Missing required fields'}), 400
-
-        print(f"Processing request for URL: {url}")
-        print(f"Class name: {class_name}")
-        print(f"Number of articles: {len(articles)}")
 
         # Generate RSS feed
         rss_content = create_rss_feed(class_name, articles, url)
-        
-        filename = f"{url_for_filename}_class_{class_name}_{int(time.time())}.xml"
         
         try:
             # Ensure rss_content is properly encoded as bytes
@@ -121,12 +127,12 @@ def save_to_supabase():
             with open('temp.xml', 'wb') as f:
                 f.write(rss_bytes)
             
-            # Upload the file
+            # Upload the file without any path structure
             with open('temp.xml', 'rb') as f:
                 result = supabase.storage \
                     .from_('class-analysis') \
                     .upload(
-                        path=filename,
+                        path=filename,  # Remove any path separators
                         file=f,
                         file_options={"content-type": "application/xml"}
                     )

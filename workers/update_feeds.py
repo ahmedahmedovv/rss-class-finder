@@ -66,15 +66,20 @@ def main():
                 print(f"Skipping: Invalid filename format")
                 continue
             
-            # Remove any existing http:__ or https:__ prefix
             url_part = parts[0]
-            if url_part.startswith('http:__'):
-                url_part = url_part[7:]
-            elif url_part.startswith('https:__'):
-                url_part = url_part[8:]
+            # Convert the URL part back to a proper URL
+            if '_' in url_part:
+                # Split domain and path
+                domain_parts = url_part.split('_', 1)
+                if len(domain_parts) > 1:
+                    domain = domain_parts[0]
+                    path = domain_parts[1].replace('_', '/')
+                    url = f"https://{domain}/{path}"
+                else:
+                    url = f"https://{url_part}"
+            else:
+                url = f"https://{url_part}"
             
-            # Replace double underscores with forward slashes
-            url = f"https://{url_part.replace('__', '/')}"
             class_name = parts[1].split('_')[0]
                 
             print(f"Attempting to fetch: {url}")

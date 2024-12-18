@@ -67,8 +67,19 @@ function displayResults(results) {
 }
 
 function exportClass(className, articles) {
-    const url = document.getElementById('urlInput').value;
-    const urlForFilename = url.replace(/\//g, '__');  // Replace all forward slashes with double underscores
+    const url = document.getElementById('urlInput').value.trim();
+    
+    // Ensure URL is properly formatted
+    let processedUrl = url;
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        processedUrl = 'https://' + url;
+    }
+    
+    // Create a safe filename by removing protocol and replacing special chars
+    const urlForFilename = processedUrl
+        .replace(/^https?:\/\//, '')  // Remove protocol
+        .replace(/[\/\?=&]/g, '_')    // Replace special chars with underscore
+        .replace(/_{2,}/g, '_');      // Replace multiple underscores with single
     
     fetch('/save-to-supabase', {
         method: 'POST',
@@ -78,8 +89,8 @@ function exportClass(className, articles) {
         body: JSON.stringify({
             className: className,
             articles: articles,
-            url: url,
-            urlForFilename: urlForFilename  // Add this new field
+            url: processedUrl,
+            urlForFilename: urlForFilename
         })
     })
     .then(response => {
