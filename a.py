@@ -24,11 +24,13 @@ for tag in soup.find_all(True):  # True finds all tags
                     class_content[cls] = []
                 class_content[cls].append(text)
 
-# Remove classes with only one article, duplicated articles, or articles with only one word
+# Modified filtering of classes
 class_content = {
-    cls: [article for article in articles if len(article.split()) > 1]
+    cls: articles 
     for cls, articles in class_content.items()
-    if len(articles) > 1 and len(set(articles)) == len(articles)
+    if len(articles) > 1  # Only keep classes with more than one article
+    and len(set(articles)) == len(articles)  # Remove duplicates
+    and all(len(article.split()) > 1 for article in articles)  # Skip single-word articles
 }
 
 def create_html_report(class_content):
@@ -66,28 +68,94 @@ def create_html_report(class_content):
                 font-size: 0.9em;
                 margin-top: 5px;
             }
+            .export-container {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: white;
+                padding: 15px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            }
+            .export-input {
+                padding: 5px;
+                margin-right: 5px;
+                border: 1px solid #ddd;
+                border-radius: 3px;
+            }
+            .export-button {
+                padding: 5px 10px;
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 3px;
+                cursor: pointer;
+            }
+            .export-button:hover {
+                background-color: #45a049;
+            }
         </style>
+        <script>
+            function exportClass() {
+                const className = document.getElementById('classInput').value;
+                const allClasses = """ + json.dumps(class_content) + """;
+                
+                if (className in allClasses) {
+                    const classData = allClasses[className];
+                    const jsonData = JSON.stringify({ [className]: classData }, null, 2);
+                    
+                    // Create blob and download link
+                    const blob = new Blob([jsonData], { type: 'application/json' });
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `class_${className}.json`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+                    
+                    alert('Class exported successfully!');
+                } else {
+                    alert('Class not found! Available classes: ' + Object.keys(allClasses).join(', '));
+                }
+            }
+        </script>
     </head>
     <body>
         <h1>Website Content Classes Report</h1>
         <p>Generated on: """ + datetime.now().strftime("%Y-%m-%d %H:%M:%S") + """</p>
         <p>URL: """ + url + """</p>
+        
+        <div class="export-container">
+            <input type="text" id="classInput" class="export-input" placeholder="Enter class name">
+            <button onclick="exportClass()" class="export-button">Export Class to JSON</button>
+        </div>
     """
 
-    # Add all classes and their content
+    # Add class count summary
+    html_content += f"""
+        <div class="summary">
+            <p>Total number of classes with multiple articles: {len(class_content)}</p>
+        </div>
+    """
+
+    # Add all classes and their content (skipping single-article classes)
     for cls, articles in class_content.items():
-        html_content += f"""
-        <div class="class-container">
-            <div class="class-name">Class: {cls}</div>
-            <div class="stats">Number of articles: {len(articles)}</div>
-        """
-        for article in articles:
+        if len(articles) > 1:  # Double-check to ensure multiple articles
             html_content += f"""
-            <div class="article">
-                {article}
-            </div>
+            <div class="class-container">
+                <div class="class-name">Class: {cls}</div>
+                <div class="stats">Number of articles: {len(articles)}</div>
             """
-        html_content += "</div>"
+            for article in articles:
+                html_content += f"""
+                <div class="article">
+                    {article}
+                </div>
+                """
+            html_content += "</div>"
 
     html_content += """
     </body>
