@@ -67,16 +67,42 @@ function displayResults(results) {
 }
 
 function exportClass(className, articles) {
-    const jsonData = JSON.stringify({ [className]: articles }, null, 2);
-    const blob = new Blob([jsonData], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `class_${className}.json`;
-    document.body.appendChild(a);
-    a.click();
-    
-    URL.revokeObjectURL(url);
-    document.body.removeChild(a);
+    // Send to Supabase storage through Flask backend
+    fetch('/save-to-supabase', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            className: className,
+            articles: articles
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Create a clickable link to the stored file
+            const linkDiv = document.createElement('div');
+            linkDiv.className = 'storage-link';
+            const link = document.createElement('a');
+            link.href = data.url;
+            link.target = '_blank';
+            link.textContent = 'View Stored Results';
+            linkDiv.appendChild(link);
+            
+            // Find the corresponding class container and append the link
+            const classContainers = document.querySelectorAll('.class-container');
+            for (const container of classContainers) {
+                if (container.querySelector('.class-name').textContent === `Class: ${className}`) {
+                    container.querySelector('.class-header').appendChild(linkDiv);
+                    break;
+                }
+            }
+        } else {
+            alert('Error saving to storage');
+        }
+    })
+    .catch(error => {
+        alert('Error saving to storage: ' + error);
+    });
 } 
