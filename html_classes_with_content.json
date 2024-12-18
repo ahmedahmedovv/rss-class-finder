@@ -55,6 +55,14 @@
         "lektury do słuchania",
         "Akademia Radiowa"
     ],
+    "menu-ext": [
+        "Jak słuchaćO nasLinkiRSSPodcastyRadioRedakcje:PolskaEnglishБеларускаяDeutschРусскийУкраїнськаHebrew"
+    ],
+    "menu-ext__wrapper": [
+        "Jak słuchaćO nasLinkiRSSPodcastyRadioRedakcje:PolskaEnglishБеларускаяDeutschРусскийУкраїнськаHebrew"
+    ],
+    "menu-ext-redaction": [],
+    "menu-ext-redaction__item--decorate": [],
     "submenu-ext-category": [
         "Strona głównaKategorieWiadomości z krajuSpołeczeństwoGospodarkaSpotkania z PoloniąKulturaWidziane z PolskiWybitni Polacy II RPIrlandzkie osobliwościKontaktJak słuchaćO nasLinkiRSSPodcastyRadio",
         "Jak słuchaćO nasLinkiRSS"
@@ -84,6 +92,15 @@
         "\"Polska i Czechy mają dziś wiele wspólnych interesów\". Konsultacje rządów w Pradze",
         "Unia Europejska i Stany Zjednoczone potępiły atak Iranu na Izrael",
         "\"To zaszczyt iż Senat  może opiekować się Polonią i Polakami za granicą\". Obrady Polonijnej Rady Konsultacyjnej"
+    ],
+    "menu-pr-programs__item": [
+        "polskie radio 24"
+    ],
+    "menu-pr-programs__link": [
+        "polskie radio 24"
+    ],
+    "submenu-ext__wrapper": [
+        "Jak słuchaćO nasLinkiRSS"
     ],
     "pr-col-ld-4": [
         "kanały internetoweserwisy historyczne",
