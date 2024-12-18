@@ -67,8 +67,8 @@ function displayResults(results) {
 }
 
 function exportClass(className, articles) {
-    // Get base URL from the input field
-    const baseUrl = new URL(document.getElementById('urlInput').value).origin;
+    const url = document.getElementById('urlInput').value;
+    const urlForFilename = url.replace(/\//g, '__');  // Replace all forward slashes with double underscores
     
     fetch('/save-to-supabase', {
         method: 'POST',
@@ -78,10 +78,16 @@ function exportClass(className, articles) {
         body: JSON.stringify({
             className: className,
             articles: articles,
-            baseUrl: baseUrl
+            url: url,
+            urlForFilename: urlForFilename  // Add this new field
         })
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(data => Promise.reject(data));
+        }
+        return response.json();
+    })
     .then(data => {
         if (data.success) {
             // Create a container for both RSS and storage links
@@ -121,10 +127,11 @@ function exportClass(className, articles) {
                 }
             }
         } else {
-            alert('Error saving to storage');
+            alert('Error saving to storage: ' + (data.error || 'Unknown error'));
         }
     })
     .catch(error => {
-        alert('Error saving to storage: ' + error);
+        console.error('Error details:', error);
+        alert('Error saving to storage: ' + (error.details || error.message || error));
     });
 } 

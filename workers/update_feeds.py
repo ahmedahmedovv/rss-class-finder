@@ -61,15 +61,22 @@ def main():
                 print(f"Skipping: Not an XML file")
                 continue
                 
-            parts = filename.split('_class_')
+            parts = filename.split('_class_', 1)
             if len(parts) != 2:
                 print(f"Skipping: Invalid filename format")
                 continue
             
-            domain = parts[0]
-            class_name = parts[1].split('_')[0]
+            # Remove any existing http:__ or https:__ prefix
+            url_part = parts[0]
+            if url_part.startswith('http:__'):
+                url_part = url_part[7:]
+            elif url_part.startswith('https:__'):
+                url_part = url_part[8:]
             
-            url = f"https://{domain}"
+            # Replace double underscores with forward slashes
+            url = f"https://{url_part.replace('__', '/')}"
+            class_name = parts[1].split('_')[0]
+                
             print(f"Attempting to fetch: {url}")
             
             articles = analyze_page(url, class_name)

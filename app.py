@@ -95,41 +95,71 @@ def save_to_supabase():
         data = request.json
         class_name = data.get('className')
         articles = data.get('articles')
-        url = data.get('url')  # Changed from baseUrl to url
+        url = data.get('url')
+        url_for_filename = data.get('urlForFilename')
         
-        if not all([class_name, articles, url]):
+        if not all([class_name, articles, url, url_for_filename]):
             return jsonify({'error': 'Missing required fields'}), 400
 
-        # Generate RSS feed with full URL
+        print(f"Processing request for URL: {url}")
+        print(f"Class name: {class_name}")
+        print(f"Number of articles: {len(articles)}")
+
+        # Generate RSS feed
         rss_content = create_rss_feed(class_name, articles, url)
         
-        # Create filename using full URL's domain
-        domain = urlparse(url).netloc
-        filename = f"{domain}_class_{class_name}_{int(time.time())}.xml"
+        filename = f"{url_for_filename}_class_{class_name}_{int(time.time())}.xml"
         
         try:
-            # Upload to Supabase Storage
-            result = supabase.storage \
-                .from_('class-analysis') \
-                .upload(filename, rss_content)
+            # Ensure rss_content is properly encoded as bytes
+            if isinstance(rss_content, str):
+                rss_bytes = rss_content.encode('utf-8')
+            else:
+                rss_bytes = rss_content
                 
-            # Get public URL
+            # Create a temporary file with proper encoding
+            with open('temp.xml', 'wb') as f:
+                f.write(rss_bytes)
+            
+            # Upload the file
+            with open('temp.xml', 'rb') as f:
+                result = supabase.storage \
+                    .from_('class-analysis') \
+                    .upload(
+                        path=filename,
+                        file=f,
+                        file_options={"content-type": "application/xml"}
+                    )
+            
+            # Clean up
+            os.remove('temp.xml')
+            
+            # Get the public URL
             file_url = supabase.storage \
                 .from_('class-analysis') \
                 .get_public_url(filename)
-                
+            
+            print(f"Successfully uploaded file. URL: {file_url}")
+            
             return jsonify({
                 'success': True,
                 'url': file_url,
                 'format': 'RSS'
             })
+            
         except Exception as storage_error:
-            print(f"Supabase storage error: {str(storage_error)}")
-            return jsonify({'error': 'Storage operation failed'}), 500
+            print(f"Storage error: {str(storage_error)}")
+            return jsonify({
+                'error': 'Storage operation failed',
+                'details': str(storage_error)
+            }), 500
             
     except Exception as e:
         print(f"General error: {str(e)}")
-        return jsonify({'error': str(e)}), 400
+        return jsonify({
+            'error': 'Operation failed',
+            'details': str(e)
+        }), 400
 
 if __name__ == '__main__':
     app.run(debug=True) 
