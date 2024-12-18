@@ -16,10 +16,13 @@ load_dotenv()
 app = Flask(__name__)
 
 # Initialize Supabase client
-supabase: Client = create_client(
-    os.getenv('SUPABASE_URL'),
-    os.getenv('SUPABASE_KEY')
-)
+supabase_url = os.getenv('SUPABASE_URL')
+supabase_key = os.getenv('SUPABASE_KEY')
+
+if not supabase_url or not supabase_key:
+    raise ValueError("Missing required environment variables: SUPABASE_URL and SUPABASE_KEY must be set")
+
+supabase: Client = create_client(supabase_url, supabase_key)
 
 def analyze_classes(html_content):
     # Parse HTML content
@@ -115,4 +118,6 @@ def save_to_supabase():
         return jsonify({'error': str(e)}), 400
 
 if __name__ == '__main__':
-    app.run(debug=True) 
+    # Use PORT environment variable if available (for render.com)
+    port = int(os.getenv('PORT', 5000))
+    app.run(host='0.0.0.0', port=port) 
