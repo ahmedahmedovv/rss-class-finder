@@ -57,11 +57,11 @@ def analyze_classes(html_content):
     
     return filtered_content
 
-def create_rss_feed(class_name, articles, base_url):
+def create_rss_feed(class_name, articles, url):
     fg = FeedGenerator()
     fg.title(f'HTML Class Content: {class_name}')
     fg.description(f'Content extracted from HTML elements with class "{class_name}"')
-    fg.link(href=base_url)  # Use actual base URL
+    fg.link(href=url)  # Now using full URL instead of base URL
     fg.language('en')
     
     current_time = datetime.now(pytz.UTC)
@@ -70,7 +70,7 @@ def create_rss_feed(class_name, articles, base_url):
         fe = fg.add_entry()
         fe.title(article[:50] + '...' if len(article) > 50 else article)
         fe.description(article)
-        fe.link(href=base_url)  # Use actual base URL
+        fe.link(href=url)  # Now using full URL instead of base URL
         fe.pubDate(current_time)
     
     return fg.rss_str(pretty=True)
@@ -95,16 +95,16 @@ def save_to_supabase():
         data = request.json
         class_name = data.get('className')
         articles = data.get('articles')
-        base_url = data.get('baseUrl')
+        url = data.get('url')  # Changed from baseUrl to url
         
-        if not all([class_name, articles, base_url]):
+        if not all([class_name, articles, url]):
             return jsonify({'error': 'Missing required fields'}), 400
 
-        # Generate RSS feed with base URL
-        rss_content = create_rss_feed(class_name, articles, base_url)
+        # Generate RSS feed with full URL
+        rss_content = create_rss_feed(class_name, articles, url)
         
-        # Create filename using base URL
-        domain = urlparse(base_url).netloc
+        # Create filename using full URL's domain
+        domain = urlparse(url).netloc
         filename = f"{domain}_class_{class_name}_{int(time.time())}.xml"
         
         try:
