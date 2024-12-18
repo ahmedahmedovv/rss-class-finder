@@ -70,8 +70,10 @@ def main():
             class_name = parts[1].split('_')[0]
             
             url = f"https://{domain}"
+            print(f"Attempting to fetch: {url}")
             
             articles = analyze_page(url, class_name)
+            print(f"Found {len(articles)} articles for class '{class_name}'")
             
             if articles:
                 rss_content = update_rss_feed(url, class_name, articles)
@@ -81,6 +83,8 @@ def main():
                     .update(filename, rss_content)
                 
                 print(f"Updated feed for {url} - class: {class_name}")
+            else:
+                print(f"No articles found for {url} with class '{class_name}'")
             
         except Exception as e:
             print(f"Error updating {filename}: {str(e)}")
