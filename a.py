@@ -48,13 +48,21 @@ def create_html_report(class_content):
                 border: 1px solid #ddd;
                 border-radius: 5px;
             }
+            .class-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 10px;
+                background-color: #f0f0f0;
+                padding: 10px;
+                border-radius: 3px;
+            }
+            .class-info {
+                flex-grow: 1;
+            }
             .class-name { 
                 font-weight: bold;
                 color: #333;
-                margin-bottom: 10px;
-                background-color: #f0f0f0;
-                padding: 5px;
-                border-radius: 3px;
             }
             .article {
                 margin: 10px 0;
@@ -68,58 +76,32 @@ def create_html_report(class_content):
                 font-size: 0.9em;
                 margin-top: 5px;
             }
-            .export-container {
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: white;
-                padding: 15px;
-                border: 1px solid #ddd;
-                border-radius: 5px;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            }
-            .export-input {
-                padding: 5px;
-                margin-right: 5px;
-                border: 1px solid #ddd;
-                border-radius: 3px;
-            }
             .export-button {
-                padding: 5px 10px;
+                padding: 5px 15px;
                 background-color: #4CAF50;
                 color: white;
                 border: none;
                 border-radius: 3px;
                 cursor: pointer;
+                margin-left: 15px;
             }
             .export-button:hover {
                 background-color: #45a049;
             }
         </style>
         <script>
-            function exportClass() {
-                const className = document.getElementById('classInput').value;
-                const allClasses = """ + json.dumps(class_content) + """;
-                
-                if (className in allClasses) {
-                    const classData = allClasses[className];
-                    const jsonData = JSON.stringify({ [className]: classData }, null, 2);
-                    
-                    // Create blob and download link
-                    const blob = new Blob([jsonData], { type: 'application/json' });
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `class_${className}.json`;
-                    document.body.appendChild(a);
-                    a.click();
-                    window.URL.revokeObjectURL(url);
-                    document.body.removeChild(a);
-                    
-                    alert('Class exported successfully!');
-                } else {
-                    alert('Class not found! Available classes: ' + Object.keys(allClasses).join(', '));
-                }
+            function exportClass(className, articles) {
+                const jsonData = JSON.stringify({ [className]: articles }, null, 2);
+                const blob = new Blob([jsonData], { type: 'application/json' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `class_${className}.json`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+                alert(`Class "${className}" exported successfully!`);
             }
         </script>
     </head>
@@ -127,28 +109,31 @@ def create_html_report(class_content):
         <h1>Website Content Classes Report</h1>
         <p>Generated on: """ + datetime.now().strftime("%Y-%m-%d %H:%M:%S") + """</p>
         <p>URL: """ + url + """</p>
-        
-        <div class="export-container">
-            <input type="text" id="classInput" class="export-input" placeholder="Enter class name">
-            <button onclick="exportClass()" class="export-button">Export Class to JSON</button>
-        </div>
-    """
-
-    # Add class count summary
-    html_content += f"""
         <div class="summary">
             <p>Total number of classes with multiple articles: {len(class_content)}</p>
         </div>
     """
 
-    # Add all classes and their content (skipping single-article classes)
+    # Add all classes and their content
     for cls, articles in class_content.items():
-        if len(articles) > 1:  # Double-check to ensure multiple articles
+        if len(articles) > 1:
+            # Convert articles list to JSON string for JavaScript
+            articles_json = json.dumps(articles, ensure_ascii=False)
+            
             html_content += f"""
             <div class="class-container">
-                <div class="class-name">Class: {cls}</div>
-                <div class="stats">Number of articles: {len(articles)}</div>
+                <div class="class-header">
+                    <div class="class-info">
+                        <div class="class-name">Class: {cls}</div>
+                        <div class="stats">Number of articles: {len(articles)}</div>
+                    </div>
+                    <button class="export-button" 
+                            onclick='exportClass("{cls}", {articles_json})'>
+                        Export to JSON
+                    </button>
+                </div>
             """
+            
             for article in articles:
                 html_content += f"""
                 <div class="article">

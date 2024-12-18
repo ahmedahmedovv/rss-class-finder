@@ -12,13 +12,21 @@
                 border: 1px solid #ddd;
                 border-radius: 5px;
             }
+            .class-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 10px;
+                background-color: #f0f0f0;
+                padding: 10px;
+                border-radius: 3px;
+            }
+            .class-info {
+                flex-grow: 1;
+            }
             .class-name { 
                 font-weight: bold;
                 color: #333;
-                margin-bottom: 10px;
-                background-color: #f0f0f0;
-                padding: 5px;
-                border-radius: 3px;
             }
             .article {
                 margin: 10px 0;
@@ -32,78 +40,54 @@
                 font-size: 0.9em;
                 margin-top: 5px;
             }
-            .export-container {
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: white;
-                padding: 15px;
-                border: 1px solid #ddd;
-                border-radius: 5px;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            }
-            .export-input {
-                padding: 5px;
-                margin-right: 5px;
-                border: 1px solid #ddd;
-                border-radius: 3px;
-            }
             .export-button {
-                padding: 5px 10px;
+                padding: 5px 15px;
                 background-color: #4CAF50;
                 color: white;
                 border: none;
                 border-radius: 3px;
                 cursor: pointer;
+                margin-left: 15px;
             }
             .export-button:hover {
                 background-color: #45a049;
             }
         </style>
         <script>
-            function exportClass() {
-                const className = document.getElementById('classInput').value;
-                const allClasses = {"mobile-ul": ["Kierowcywiadomo\u015bcijedynkadw\u00f3jkatr\u00f3jkaczw\u00f3rkapolskie radio 24ChopinRCKLPOLSKIE RADIO DLA ZAGRANICYpolskie radio dzieciomPodcasty", "kana\u0142y internetoweserwisy historyczne", "studio reporta\u017cui dokumentu polskiego radiateatr polskiego radiaOrkiestra Polskiego Radia w Warszawielektury do s\u0142uchaniaram\u00f3wkacz\u0119stotliwo\u015bcisklepszkoleniaAkademia Radiowa"], "container": ["Portal Polskiego Radia SAS\u0142uchaj", "Kierowcyjedynkadw\u00f3jkatr\u00f3jkaczw\u00f3rkapolskie radio 24ChopinRCKLDzieciPodcasty", "Jak s\u0142ucha\u0107O nasLinkiRSSPodcastyRadioRedakcje:PolskaEnglish\u0411\u0435\u043b\u0430\u0440\u0443\u0441\u043a\u0430\u044fDeutsch\u0420\u0443\u0441\u0441\u043a\u0438\u0439\u0423\u043a\u0440\u0430\u0457\u043d\u0441\u044c\u043a\u0430Hebrew", "Jak s\u0142ucha\u0107O nasLinkiRSS", "Redakcja PolskaWidziane z PolskiSection01Widziane z PolskiWidziane z PolskiSenat wspiera Poloni\u0119. Ruszy\u0142 konkurs ofert SENAT\u2013POLONIA 202515.12.2024 12:47Widziane z PolskiPrzygotowania do prezydencji Polski w Radzie Unii Europejskiej08.12.2024 14:58Widziane z PolskiUkraina nie b\u0119dzie blokowa\u0142a ekshumacji ofiar rzezi wo\u0142y\u0144skiej. Historyczne porozumienie30.11.2024 20:51Widziane z Polski\"Ukraina jako ofiara agresji ma prawo si\u0119 broni\u0107\". USA pozwalaj\u0105 Ukrainie razi\u0107 pociskami ATACMS cele w Rosji23.11.2024 15:55Widziane z Polski\"Geostrategiczna konsekwencja USA\". W Redzikowie zosta\u0142a otwarta ameryka\u0144ska baza przeciwrakietowa17.11.2024 12:35Widziane z PolskiWielki powr\u00f3t do Bia\u0142ego Domu. Donald Trump zwyci\u0119zc\u0105 wybor\u00f3w prezydenckich w Stanach Zjednoczonych08.11.2024 16:04Widziane z Polski\"Potrzebujemy partnerskiej relacji z przedstawicielami Polonii\". Szef polskiej dyplomacji wyg\u0142osi\u0142 expos\u00e9 polonijne02.11.2024 21:36Widziane z PolskiRados\u0142aw Sikorski: Rosja prowadzi wojn\u0119 przeciwko Ukrainie, a tak\u017ce anga\u017cuje si\u0119 w dzia\u0142ania hybrydowe wymierzone w Zach\u00f3d, w tym w Polsk\u011928.10.2024 12:37Widziane z Polski\"Nadzwyczajna sytuacja potrzebuje odpowiednich metod dzia\u0142ania\". Kurs Polski w sprawie migracji poparty w Brukseli19.10.2024 10:00Widziane z Polski\"Polska i Czechy maj\u0105 dzi\u015b wiele wsp\u00f3lnych interes\u00f3w\". Konsultacje rz\u0105d\u00f3w w Pradze12.10.2024 08:15Widziane z PolskiUnia Europejska i Stany Zjednoczone pot\u0119pi\u0142y atak Iranu na Izrael04.10.2024 22:00Widziane z Polski\"To zaszczyt i\u017c Senat  mo\u017ce opiekowa\u0107 si\u0119 Poloni\u0105 i Polakami za granic\u0105\". Obrady Polonijnej Rady Konsultacyjnej28.09.2024 08:50123...24"], "title": ["Portal Polskiego Radia SA", "Senat wspiera Poloni\u0119. Ruszy\u0142 konkurs ofert SENAT\u2013POLONIA 2025", "Przygotowania do prezydencji Polski w Radzie Unii Europejskiej", "Ukraina nie b\u0119dzie blokowa\u0142a ekshumacji ofiar rzezi wo\u0142y\u0144skiej. Historyczne porozumienie", "\"Ukraina jako ofiara agresji ma prawo si\u0119 broni\u0107\". USA pozwalaj\u0105 Ukrainie razi\u0107 pociskami ATACMS cele w Rosji", "\"Geostrategiczna konsekwencja USA\". W Redzikowie zosta\u0142a otwarta ameryka\u0144ska baza przeciwrakietowa", "Wielki powr\u00f3t do Bia\u0142ego Domu. Donald Trump zwyci\u0119zc\u0105 wybor\u00f3w prezydenckich w Stanach Zjednoczonych", "\"Potrzebujemy partnerskiej relacji z przedstawicielami Polonii\". Szef polskiej dyplomacji wyg\u0142osi\u0142 expos\u00e9 polonijne", "Rados\u0142aw Sikorski: Rosja prowadzi wojn\u0119 przeciwko Ukrainie, a tak\u017ce anga\u017cuje si\u0119 w dzia\u0142ania hybrydowe wymierzone w Zach\u00f3d, w tym w Polsk\u0119", "\"Nadzwyczajna sytuacja potrzebuje odpowiednich metod dzia\u0142ania\". Kurs Polski w sprawie migracji poparty w Brukseli", "\"Polska i Czechy maj\u0105 dzi\u015b wiele wsp\u00f3lnych interes\u00f3w\". Konsultacje rz\u0105d\u00f3w w Pradze", "Unia Europejska i Stany Zjednoczone pot\u0119pi\u0142y atak Iranu na Izrael", "\"To zaszczyt i\u017c Senat  mo\u017ce opiekowa\u0107 si\u0119 Poloni\u0105 i Polakami za granic\u0105\". Obrady Polonijnej Rady Konsultacyjnej"], "pr-col-ld-4": ["kana\u0142y internetoweserwisy historyczne", "ram\u00f3wkacz\u0119stotliwo\u015bcisklepszkoleniaAkademia Radiowa", "studio reporta\u017cui dokumentu polskiego\n                          radiateatr polskiego radiaOrkiestra Polskiego Radia w Warszawielektury do s\u0142uchania"], "center-content": ["kana\u0142y internetoweserwisy historyczne", "ram\u00f3wkacz\u0119stotliwo\u015bcisklepszkoleniaAkademia Radiowa", "studio reporta\u017cui dokumentu polskiego\n                          radiateatr polskiego radiaOrkiestra Polskiego Radia w Warszawielektury do s\u0142uchania"], "column-content": ["kana\u0142y internetoweserwisy historyczne", "ram\u00f3wkacz\u0119stotliwo\u015bcisklepszkoleniaAkademia Radiowa", "studio reporta\u017cui dokumentu polskiego\n                          radiateatr polskiego radiaOrkiestra Polskiego Radia w Warszawielektury do s\u0142uchania"], "row": ["Redakcja PolskaWidziane z Polski", "Section01Widziane z PolskiWidziane z PolskiSenat wspiera Poloni\u0119. Ruszy\u0142 konkurs ofert SENAT\u2013POLONIA 202515.12.2024 12:47Widziane z PolskiPrzygotowania do prezydencji Polski w Radzie Unii Europejskiej08.12.2024 14:58Widziane z PolskiUkraina nie b\u0119dzie blokowa\u0142a ekshumacji ofiar rzezi wo\u0142y\u0144skiej. Historyczne porozumienie30.11.2024 20:51Widziane z Polski\"Ukraina jako ofiara agresji ma prawo si\u0119 broni\u0107\". USA pozwalaj\u0105 Ukrainie razi\u0107 pociskami ATACMS cele w Rosji23.11.2024 15:55Widziane z Polski\"Geostrategiczna konsekwencja USA\". W Redzikowie zosta\u0142a otwarta ameryka\u0144ska baza przeciwrakietowa17.11.2024 12:35Widziane z PolskiWielki powr\u00f3t do Bia\u0142ego Domu. Donald Trump zwyci\u0119zc\u0105 wybor\u00f3w prezydenckich w Stanach Zjednoczonych08.11.2024 16:04Widziane z Polski\"Potrzebujemy partnerskiej relacji z przedstawicielami Polonii\". Szef polskiej dyplomacji wyg\u0142osi\u0142 expos\u00e9 polonijne02.11.2024 21:36Widziane z PolskiRados\u0142aw Sikorski: Rosja prowadzi wojn\u0119 przeciwko Ukrainie, a tak\u017ce anga\u017cuje si\u0119 w dzia\u0142ania hybrydowe wymierzone w Zach\u00f3d, w tym w Polsk\u011928.10.2024 12:37Widziane z Polski\"Nadzwyczajna sytuacja potrzebuje odpowiednich metod dzia\u0142ania\". Kurs Polski w sprawie migracji poparty w Brukseli19.10.2024 10:00Widziane z Polski\"Polska i Czechy maj\u0105 dzi\u015b wiele wsp\u00f3lnych interes\u00f3w\". Konsultacje rz\u0105d\u00f3w w Pradze12.10.2024 08:15Widziane z PolskiUnia Europejska i Stany Zjednoczone pot\u0119pi\u0142y atak Iranu na Izrael04.10.2024 22:00Widziane z Polski\"To zaszczyt i\u017c Senat  mo\u017ce opiekowa\u0107 si\u0119 Poloni\u0105 i Polakami za granic\u0105\". Obrady Polonijnej Rady Konsultacyjnej28.09.2024 08:50123...24"], "article": ["Widziane z PolskiSenat wspiera Poloni\u0119. Ruszy\u0142 konkurs ofert SENAT\u2013POLONIA 202515.12.2024 12:47", "Widziane z PolskiPrzygotowania do prezydencji Polski w Radzie Unii Europejskiej08.12.2024 14:58", "Widziane z PolskiUkraina nie b\u0119dzie blokowa\u0142a ekshumacji ofiar rzezi wo\u0142y\u0144skiej. Historyczne porozumienie30.11.2024 20:51", "Widziane z Polski\"Ukraina jako ofiara agresji ma prawo si\u0119 broni\u0107\". USA pozwalaj\u0105 Ukrainie razi\u0107 pociskami ATACMS cele w Rosji23.11.2024 15:55", "Widziane z Polski\"Geostrategiczna konsekwencja USA\". W Redzikowie zosta\u0142a otwarta ameryka\u0144ska baza przeciwrakietowa17.11.2024 12:35", "Widziane z PolskiWielki powr\u00f3t do Bia\u0142ego Domu. Donald Trump zwyci\u0119zc\u0105 wybor\u00f3w prezydenckich w Stanach Zjednoczonych08.11.2024 16:04", "Widziane z Polski\"Potrzebujemy partnerskiej relacji z przedstawicielami Polonii\". Szef polskiej dyplomacji wyg\u0142osi\u0142 expos\u00e9 polonijne02.11.2024 21:36", "Widziane z PolskiRados\u0142aw Sikorski: Rosja prowadzi wojn\u0119 przeciwko Ukrainie, a tak\u017ce anga\u017cuje si\u0119 w dzia\u0142ania hybrydowe wymierzone w Zach\u00f3d, w tym w Polsk\u011928.10.2024 12:37", "Widziane z Polski\"Nadzwyczajna sytuacja potrzebuje odpowiednich metod dzia\u0142ania\". Kurs Polski w sprawie migracji poparty w Brukseli19.10.2024 10:00", "Widziane z Polski\"Polska i Czechy maj\u0105 dzi\u015b wiele wsp\u00f3lnych interes\u00f3w\". Konsultacje rz\u0105d\u00f3w w Pradze12.10.2024 08:15", "Widziane z PolskiUnia Europejska i Stany Zjednoczone pot\u0119pi\u0142y atak Iranu na Izrael04.10.2024 22:00", "Widziane z Polski\"To zaszczyt i\u017c Senat  mo\u017ce opiekowa\u0107 si\u0119 Poloni\u0105 i Polakami za granic\u0105\". Obrady Polonijnej Rady Konsultacyjnej28.09.2024 08:50"], "article__content": ["Senat wspiera Poloni\u0119. Ruszy\u0142 konkurs ofert SENAT\u2013POLONIA 202515.12.2024 12:47", "Przygotowania do prezydencji Polski w Radzie Unii Europejskiej08.12.2024 14:58", "Ukraina nie b\u0119dzie blokowa\u0142a ekshumacji ofiar rzezi wo\u0142y\u0144skiej. Historyczne porozumienie30.11.2024 20:51", "\"Ukraina jako ofiara agresji ma prawo si\u0119 broni\u0107\". USA pozwalaj\u0105 Ukrainie razi\u0107 pociskami ATACMS cele w Rosji23.11.2024 15:55", "\"Geostrategiczna konsekwencja USA\". W Redzikowie zosta\u0142a otwarta ameryka\u0144ska baza przeciwrakietowa17.11.2024 12:35", "Wielki powr\u00f3t do Bia\u0142ego Domu. Donald Trump zwyci\u0119zc\u0105 wybor\u00f3w prezydenckich w Stanach Zjednoczonych08.11.2024 16:04", "\"Potrzebujemy partnerskiej relacji z przedstawicielami Polonii\". Szef polskiej dyplomacji wyg\u0142osi\u0142 expos\u00e9 polonijne02.11.2024 21:36", "Rados\u0142aw Sikorski: Rosja prowadzi wojn\u0119 przeciwko Ukrainie, a tak\u017ce anga\u017cuje si\u0119 w dzia\u0142ania hybrydowe wymierzone w Zach\u00f3d, w tym w Polsk\u011928.10.2024 12:37", "\"Nadzwyczajna sytuacja potrzebuje odpowiednich metod dzia\u0142ania\". Kurs Polski w sprawie migracji poparty w Brukseli19.10.2024 10:00", "\"Polska i Czechy maj\u0105 dzi\u015b wiele wsp\u00f3lnych interes\u00f3w\". Konsultacje rz\u0105d\u00f3w w Pradze12.10.2024 08:15", "Unia Europejska i Stany Zjednoczone pot\u0119pi\u0142y atak Iranu na Izrael04.10.2024 22:00", "\"To zaszczyt i\u017c Senat  mo\u017ce opiekowa\u0107 si\u0119 Poloni\u0105 i Polakami za granic\u0105\". Obrady Polonijnej Rady Konsultacyjnej28.09.2024 08:50"], "title--big": ["Senat wspiera Poloni\u0119. Ruszy\u0142 konkurs ofert SENAT\u2013POLONIA 2025", "Przygotowania do prezydencji Polski w Radzie Unii Europejskiej", "Ukraina nie b\u0119dzie blokowa\u0142a ekshumacji ofiar rzezi wo\u0142y\u0144skiej. Historyczne porozumienie", "\"Ukraina jako ofiara agresji ma prawo si\u0119 broni\u0107\". USA pozwalaj\u0105 Ukrainie razi\u0107 pociskami ATACMS cele w Rosji", "\"Geostrategiczna konsekwencja USA\". W Redzikowie zosta\u0142a otwarta ameryka\u0144ska baza przeciwrakietowa", "Wielki powr\u00f3t do Bia\u0142ego Domu. Donald Trump zwyci\u0119zc\u0105 wybor\u00f3w prezydenckich w Stanach Zjednoczonych", "\"Potrzebujemy partnerskiej relacji z przedstawicielami Polonii\". Szef polskiej dyplomacji wyg\u0142osi\u0142 expos\u00e9 polonijne", "Rados\u0142aw Sikorski: Rosja prowadzi wojn\u0119 przeciwko Ukrainie, a tak\u017ce anga\u017cuje si\u0119 w dzia\u0142ania hybrydowe wymierzone w Zach\u00f3d, w tym w Polsk\u0119", "\"Nadzwyczajna sytuacja potrzebuje odpowiednich metod dzia\u0142ania\". Kurs Polski w sprawie migracji poparty w Brukseli", "\"Polska i Czechy maj\u0105 dzi\u015b wiele wsp\u00f3lnych interes\u00f3w\". Konsultacje rz\u0105d\u00f3w w Pradze", "Unia Europejska i Stany Zjednoczone pot\u0119pi\u0142y atak Iranu na Izrael", "\"To zaszczyt i\u017c Senat  mo\u017ce opiekowa\u0107 si\u0119 Poloni\u0105 i Polakami za granic\u0105\". Obrady Polonijnej Rady Konsultacyjnej"], "date": ["15.12.2024 12:47", "08.12.2024 14:58", "30.11.2024 20:51", "23.11.2024 15:55", "17.11.2024 12:35", "08.11.2024 16:04", "02.11.2024 21:36", "28.10.2024 12:37", "19.10.2024 10:00", "12.10.2024 08:15", "04.10.2024 22:00", "28.09.2024 08:50"], "first": ["Kana\u0142y internetoweSerwisy historyczne", "Studio reporta\u017cui dokumentu polskiego radia", "Agencja ReklamyAgencja MuzycznaAgencja PromocjiStudia NagranioweZam\u00f3wienia publiczneZasady kampanii spo\u0142ecznych", "Agencja Reklamy", "InformacyjnaAgencja RadiowaDla medi\u00f3w", "Polityka prywatno\u015bciDane osobowe", "Pobierz aplikacj\u0119 mobiln\u0105:"]};
-                
-                if (className in allClasses) {
-                    const classData = allClasses[className];
-                    const jsonData = JSON.stringify({ [className]: classData }, null, 2);
-                    
-                    // Create blob and download link
-                    const blob = new Blob([jsonData], { type: 'application/json' });
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `class_${className}.json`;
-                    document.body.appendChild(a);
-                    a.click();
-                    window.URL.revokeObjectURL(url);
-                    document.body.removeChild(a);
-                    
-                    alert('Class exported successfully!');
-                } else {
-                    alert('Class not found! Available classes: ' + Object.keys(allClasses).join(', '));
-                }
+            function exportClass(className, articles) {
+                const jsonData = JSON.stringify({ [className]: articles }, null, 2);
+                const blob = new Blob([jsonData], { type: 'application/json' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `class_${className}.json`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+                alert(`Class "${className}" exported successfully!`);
             }
         </script>
     </head>
     <body>
         <h1>Website Content Classes Report</h1>
-        <p>Generated on: 2024-12-18 12:39:18</p>
+        <p>Generated on: 2024-12-18 12:41:49</p>
         <p>URL: https://www.polskieradio.pl/399/8097</p>
-        
-        <div class="export-container">
-            <input type="text" id="classInput" class="export-input" placeholder="Enter class name">
-            <button onclick="exportClass()" class="export-button">Export Class to JSON</button>
-        </div>
-    
         <div class="summary">
-            <p>Total number of classes with multiple articles: 12</p>
+            <p>Total number of classes with multiple articles: {len(class_content)}</p>
         </div>
     
             <div class="class-container">
-                <div class="class-name">Class: mobile-ul</div>
-                <div class="stats">Number of articles: 3</div>
+                <div class="class-header">
+                    <div class="class-info">
+                        <div class="class-name">Class: mobile-ul</div>
+                        <div class="stats">Number of articles: 3</div>
+                    </div>
+                    <button class="export-button" 
+                            onclick='exportClass("mobile-ul", ["Kierowcywiadomościjedynkadwójkatrójkaczwórkapolskie radio 24ChopinRCKLPOLSKIE RADIO DLA ZAGRANICYpolskie radio dzieciomPodcasty", "kanały internetoweserwisy historyczne", "studio reportażui dokumentu polskiego radiateatr polskiego radiaOrkiestra Polskiego Radia w Warszawielektury do słuchaniaramówkaczęstotliwościsklepszkoleniaAkademia Radiowa"])'>
+                        Export to JSON
+                    </button>
+                </div>
             
                 <div class="article">
                     Kierowcywiadomościjedynkadwójkatrójkaczwórkapolskie radio 24ChopinRCKLPOLSKIE RADIO DLA ZAGRANICYpolskie radio dzieciomPodcasty
@@ -118,8 +102,16 @@
                 </div>
                 </div>
             <div class="class-container">
-                <div class="class-name">Class: container</div>
-                <div class="stats">Number of articles: 5</div>
+                <div class="class-header">
+                    <div class="class-info">
+                        <div class="class-name">Class: container</div>
+                        <div class="stats">Number of articles: 5</div>
+                    </div>
+                    <button class="export-button" 
+                            onclick='exportClass("container", ["Portal Polskiego Radia SASłuchaj", "Kierowcyjedynkadwójkatrójkaczwórkapolskie radio 24ChopinRCKLDzieciPodcasty", "Jak słuchaćO nasLinkiRSSPodcastyRadioRedakcje:PolskaEnglishБеларускаяDeutschРусскийУкраїнськаHebrew", "Jak słuchaćO nasLinkiRSS", "Redakcja PolskaWidziane z PolskiSection01Widziane z PolskiWidziane z PolskiSenat wspiera Polonię. Ruszył konkurs ofert SENAT–POLONIA 202515.12.2024 12:47Widziane z PolskiPrzygotowania do prezydencji Polski w Radzie Unii Europejskiej08.12.2024 14:58Widziane z PolskiUkraina nie będzie blokowała ekshumacji ofiar rzezi wołyńskiej. Historyczne porozumienie30.11.2024 20:51Widziane z Polski\"Ukraina jako ofiara agresji ma prawo się bronić\". USA pozwalają Ukrainie razić pociskami ATACMS cele w Rosji23.11.2024 15:55Widziane z Polski\"Geostrategiczna konsekwencja USA\". W Redzikowie została otwarta amerykańska baza przeciwrakietowa17.11.2024 12:35Widziane z PolskiWielki powrót do Białego Domu. Donald Trump zwycięzcą wyborów prezydenckich w Stanach Zjednoczonych08.11.2024 16:04Widziane z Polski\"Potrzebujemy partnerskiej relacji z przedstawicielami Polonii\". Szef polskiej dyplomacji wygłosił exposé polonijne02.11.2024 21:36Widziane z PolskiRadosław Sikorski: Rosja prowadzi wojnę przeciwko Ukrainie, a także angażuje się w działania hybrydowe wymierzone w Zachód, w tym w Polskę28.10.2024 12:37Widziane z Polski\"Nadzwyczajna sytuacja potrzebuje odpowiednich metod działania\". Kurs Polski w sprawie migracji poparty w Brukseli19.10.2024 10:00Widziane z Polski\"Polska i Czechy mają dziś wiele wspólnych interesów\". Konsultacje rządów w Pradze12.10.2024 08:15Widziane z PolskiUnia Europejska i Stany Zjednoczone potępiły atak Iranu na Izrael04.10.2024 22:00Widziane z Polski\"To zaszczyt iż Senat  może opiekować się Polonią i Polakami za granicą\". Obrady Polonijnej Rady Konsultacyjnej28.09.2024 08:50123...24"])'>
+                        Export to JSON
+                    </button>
+                </div>
             
                 <div class="article">
                     Portal Polskiego Radia SASłuchaj
@@ -142,8 +134,16 @@
                 </div>
                 </div>
             <div class="class-container">
-                <div class="class-name">Class: title</div>
-                <div class="stats">Number of articles: 13</div>
+                <div class="class-header">
+                    <div class="class-info">
+                        <div class="class-name">Class: title</div>
+                        <div class="stats">Number of articles: 13</div>
+                    </div>
+                    <button class="export-button" 
+                            onclick='exportClass("title", ["Portal Polskiego Radia SA", "Senat wspiera Polonię. Ruszył konkurs ofert SENAT–POLONIA 2025", "Przygotowania do prezydencji Polski w Radzie Unii Europejskiej", "Ukraina nie będzie blokowała ekshumacji ofiar rzezi wołyńskiej. Historyczne porozumienie", "\"Ukraina jako ofiara agresji ma prawo się bronić\". USA pozwalają Ukrainie razić pociskami ATACMS cele w Rosji", "\"Geostrategiczna konsekwencja USA\". W Redzikowie została otwarta amerykańska baza przeciwrakietowa", "Wielki powrót do Białego Domu. Donald Trump zwycięzcą wyborów prezydenckich w Stanach Zjednoczonych", "\"Potrzebujemy partnerskiej relacji z przedstawicielami Polonii\". Szef polskiej dyplomacji wygłosił exposé polonijne", "Radosław Sikorski: Rosja prowadzi wojnę przeciwko Ukrainie, a także angażuje się w działania hybrydowe wymierzone w Zachód, w tym w Polskę", "\"Nadzwyczajna sytuacja potrzebuje odpowiednich metod działania\". Kurs Polski w sprawie migracji poparty w Brukseli", "\"Polska i Czechy mają dziś wiele wspólnych interesów\". Konsultacje rządów w Pradze", "Unia Europejska i Stany Zjednoczone potępiły atak Iranu na Izrael", "\"To zaszczyt iż Senat  może opiekować się Polonią i Polakami za granicą\". Obrady Polonijnej Rady Konsultacyjnej"])'>
+                        Export to JSON
+                    </button>
+                </div>
             
                 <div class="article">
                     Portal Polskiego Radia SA
@@ -198,8 +198,16 @@
                 </div>
                 </div>
             <div class="class-container">
-                <div class="class-name">Class: pr-col-ld-4</div>
-                <div class="stats">Number of articles: 3</div>
+                <div class="class-header">
+                    <div class="class-info">
+                        <div class="class-name">Class: pr-col-ld-4</div>
+                        <div class="stats">Number of articles: 3</div>
+                    </div>
+                    <button class="export-button" 
+                            onclick='exportClass("pr-col-ld-4", ["kanały internetoweserwisy historyczne", "ramówkaczęstotliwościsklepszkoleniaAkademia Radiowa", "studio reportażui dokumentu polskiego\n                          radiateatr polskiego radiaOrkiestra Polskiego Radia w Warszawielektury do słuchania"])'>
+                        Export to JSON
+                    </button>
+                </div>
             
                 <div class="article">
                     kanały internetoweserwisy historyczne
@@ -215,8 +223,16 @@
                 </div>
                 </div>
             <div class="class-container">
-                <div class="class-name">Class: center-content</div>
-                <div class="stats">Number of articles: 3</div>
+                <div class="class-header">
+                    <div class="class-info">
+                        <div class="class-name">Class: center-content</div>
+                        <div class="stats">Number of articles: 3</div>
+                    </div>
+                    <button class="export-button" 
+                            onclick='exportClass("center-content", ["kanały internetoweserwisy historyczne", "ramówkaczęstotliwościsklepszkoleniaAkademia Radiowa", "studio reportażui dokumentu polskiego\n                          radiateatr polskiego radiaOrkiestra Polskiego Radia w Warszawielektury do słuchania"])'>
+                        Export to JSON
+                    </button>
+                </div>
             
                 <div class="article">
                     kanały internetoweserwisy historyczne
@@ -232,8 +248,16 @@
                 </div>
                 </div>
             <div class="class-container">
-                <div class="class-name">Class: column-content</div>
-                <div class="stats">Number of articles: 3</div>
+                <div class="class-header">
+                    <div class="class-info">
+                        <div class="class-name">Class: column-content</div>
+                        <div class="stats">Number of articles: 3</div>
+                    </div>
+                    <button class="export-button" 
+                            onclick='exportClass("column-content", ["kanały internetoweserwisy historyczne", "ramówkaczęstotliwościsklepszkoleniaAkademia Radiowa", "studio reportażui dokumentu polskiego\n                          radiateatr polskiego radiaOrkiestra Polskiego Radia w Warszawielektury do słuchania"])'>
+                        Export to JSON
+                    </button>
+                </div>
             
                 <div class="article">
                     kanały internetoweserwisy historyczne
@@ -249,8 +273,16 @@
                 </div>
                 </div>
             <div class="class-container">
-                <div class="class-name">Class: row</div>
-                <div class="stats">Number of articles: 2</div>
+                <div class="class-header">
+                    <div class="class-info">
+                        <div class="class-name">Class: row</div>
+                        <div class="stats">Number of articles: 2</div>
+                    </div>
+                    <button class="export-button" 
+                            onclick='exportClass("row", ["Redakcja PolskaWidziane z Polski", "Section01Widziane z PolskiWidziane z PolskiSenat wspiera Polonię. Ruszył konkurs ofert SENAT–POLONIA 202515.12.2024 12:47Widziane z PolskiPrzygotowania do prezydencji Polski w Radzie Unii Europejskiej08.12.2024 14:58Widziane z PolskiUkraina nie będzie blokowała ekshumacji ofiar rzezi wołyńskiej. Historyczne porozumienie30.11.2024 20:51Widziane z Polski\"Ukraina jako ofiara agresji ma prawo się bronić\". USA pozwalają Ukrainie razić pociskami ATACMS cele w Rosji23.11.2024 15:55Widziane z Polski\"Geostrategiczna konsekwencja USA\". W Redzikowie została otwarta amerykańska baza przeciwrakietowa17.11.2024 12:35Widziane z PolskiWielki powrót do Białego Domu. Donald Trump zwycięzcą wyborów prezydenckich w Stanach Zjednoczonych08.11.2024 16:04Widziane z Polski\"Potrzebujemy partnerskiej relacji z przedstawicielami Polonii\". Szef polskiej dyplomacji wygłosił exposé polonijne02.11.2024 21:36Widziane z PolskiRadosław Sikorski: Rosja prowadzi wojnę przeciwko Ukrainie, a także angażuje się w działania hybrydowe wymierzone w Zachód, w tym w Polskę28.10.2024 12:37Widziane z Polski\"Nadzwyczajna sytuacja potrzebuje odpowiednich metod działania\". Kurs Polski w sprawie migracji poparty w Brukseli19.10.2024 10:00Widziane z Polski\"Polska i Czechy mają dziś wiele wspólnych interesów\". Konsultacje rządów w Pradze12.10.2024 08:15Widziane z PolskiUnia Europejska i Stany Zjednoczone potępiły atak Iranu na Izrael04.10.2024 22:00Widziane z Polski\"To zaszczyt iż Senat  może opiekować się Polonią i Polakami za granicą\". Obrady Polonijnej Rady Konsultacyjnej28.09.2024 08:50123...24"])'>
+                        Export to JSON
+                    </button>
+                </div>
             
                 <div class="article">
                     Redakcja PolskaWidziane z Polski
@@ -261,8 +293,16 @@
                 </div>
                 </div>
             <div class="class-container">
-                <div class="class-name">Class: article</div>
-                <div class="stats">Number of articles: 12</div>
+                <div class="class-header">
+                    <div class="class-info">
+                        <div class="class-name">Class: article</div>
+                        <div class="stats">Number of articles: 12</div>
+                    </div>
+                    <button class="export-button" 
+                            onclick='exportClass("article", ["Widziane z PolskiSenat wspiera Polonię. Ruszył konkurs ofert SENAT–POLONIA 202515.12.2024 12:47", "Widziane z PolskiPrzygotowania do prezydencji Polski w Radzie Unii Europejskiej08.12.2024 14:58", "Widziane z PolskiUkraina nie będzie blokowała ekshumacji ofiar rzezi wołyńskiej. Historyczne porozumienie30.11.2024 20:51", "Widziane z Polski\"Ukraina jako ofiara agresji ma prawo się bronić\". USA pozwalają Ukrainie razić pociskami ATACMS cele w Rosji23.11.2024 15:55", "Widziane z Polski\"Geostrategiczna konsekwencja USA\". W Redzikowie została otwarta amerykańska baza przeciwrakietowa17.11.2024 12:35", "Widziane z PolskiWielki powrót do Białego Domu. Donald Trump zwycięzcą wyborów prezydenckich w Stanach Zjednoczonych08.11.2024 16:04", "Widziane z Polski\"Potrzebujemy partnerskiej relacji z przedstawicielami Polonii\". Szef polskiej dyplomacji wygłosił exposé polonijne02.11.2024 21:36", "Widziane z PolskiRadosław Sikorski: Rosja prowadzi wojnę przeciwko Ukrainie, a także angażuje się w działania hybrydowe wymierzone w Zachód, w tym w Polskę28.10.2024 12:37", "Widziane z Polski\"Nadzwyczajna sytuacja potrzebuje odpowiednich metod działania\". Kurs Polski w sprawie migracji poparty w Brukseli19.10.2024 10:00", "Widziane z Polski\"Polska i Czechy mają dziś wiele wspólnych interesów\". Konsultacje rządów w Pradze12.10.2024 08:15", "Widziane z PolskiUnia Europejska i Stany Zjednoczone potępiły atak Iranu na Izrael04.10.2024 22:00", "Widziane z Polski\"To zaszczyt iż Senat  może opiekować się Polonią i Polakami za granicą\". Obrady Polonijnej Rady Konsultacyjnej28.09.2024 08:50"])'>
+                        Export to JSON
+                    </button>
+                </div>
             
                 <div class="article">
                     Widziane z PolskiSenat wspiera Polonię. Ruszył konkurs ofert SENAT–POLONIA 202515.12.2024 12:47
@@ -313,8 +353,16 @@
                 </div>
                 </div>
             <div class="class-container">
-                <div class="class-name">Class: article__content</div>
-                <div class="stats">Number of articles: 12</div>
+                <div class="class-header">
+                    <div class="class-info">
+                        <div class="class-name">Class: article__content</div>
+                        <div class="stats">Number of articles: 12</div>
+                    </div>
+                    <button class="export-button" 
+                            onclick='exportClass("article__content", ["Senat wspiera Polonię. Ruszył konkurs ofert SENAT–POLONIA 202515.12.2024 12:47", "Przygotowania do prezydencji Polski w Radzie Unii Europejskiej08.12.2024 14:58", "Ukraina nie będzie blokowała ekshumacji ofiar rzezi wołyńskiej. Historyczne porozumienie30.11.2024 20:51", "\"Ukraina jako ofiara agresji ma prawo się bronić\". USA pozwalają Ukrainie razić pociskami ATACMS cele w Rosji23.11.2024 15:55", "\"Geostrategiczna konsekwencja USA\". W Redzikowie została otwarta amerykańska baza przeciwrakietowa17.11.2024 12:35", "Wielki powrót do Białego Domu. Donald Trump zwycięzcą wyborów prezydenckich w Stanach Zjednoczonych08.11.2024 16:04", "\"Potrzebujemy partnerskiej relacji z przedstawicielami Polonii\". Szef polskiej dyplomacji wygłosił exposé polonijne02.11.2024 21:36", "Radosław Sikorski: Rosja prowadzi wojnę przeciwko Ukrainie, a także angażuje się w działania hybrydowe wymierzone w Zachód, w tym w Polskę28.10.2024 12:37", "\"Nadzwyczajna sytuacja potrzebuje odpowiednich metod działania\". Kurs Polski w sprawie migracji poparty w Brukseli19.10.2024 10:00", "\"Polska i Czechy mają dziś wiele wspólnych interesów\". Konsultacje rządów w Pradze12.10.2024 08:15", "Unia Europejska i Stany Zjednoczone potępiły atak Iranu na Izrael04.10.2024 22:00", "\"To zaszczyt iż Senat  może opiekować się Polonią i Polakami za granicą\". Obrady Polonijnej Rady Konsultacyjnej28.09.2024 08:50"])'>
+                        Export to JSON
+                    </button>
+                </div>
             
                 <div class="article">
                     Senat wspiera Polonię. Ruszył konkurs ofert SENAT–POLONIA 202515.12.2024 12:47
@@ -365,8 +413,16 @@
                 </div>
                 </div>
             <div class="class-container">
-                <div class="class-name">Class: title--big</div>
-                <div class="stats">Number of articles: 12</div>
+                <div class="class-header">
+                    <div class="class-info">
+                        <div class="class-name">Class: title--big</div>
+                        <div class="stats">Number of articles: 12</div>
+                    </div>
+                    <button class="export-button" 
+                            onclick='exportClass("title--big", ["Senat wspiera Polonię. Ruszył konkurs ofert SENAT–POLONIA 2025", "Przygotowania do prezydencji Polski w Radzie Unii Europejskiej", "Ukraina nie będzie blokowała ekshumacji ofiar rzezi wołyńskiej. Historyczne porozumienie", "\"Ukraina jako ofiara agresji ma prawo się bronić\". USA pozwalają Ukrainie razić pociskami ATACMS cele w Rosji", "\"Geostrategiczna konsekwencja USA\". W Redzikowie została otwarta amerykańska baza przeciwrakietowa", "Wielki powrót do Białego Domu. Donald Trump zwycięzcą wyborów prezydenckich w Stanach Zjednoczonych", "\"Potrzebujemy partnerskiej relacji z przedstawicielami Polonii\". Szef polskiej dyplomacji wygłosił exposé polonijne", "Radosław Sikorski: Rosja prowadzi wojnę przeciwko Ukrainie, a także angażuje się w działania hybrydowe wymierzone w Zachód, w tym w Polskę", "\"Nadzwyczajna sytuacja potrzebuje odpowiednich metod działania\". Kurs Polski w sprawie migracji poparty w Brukseli", "\"Polska i Czechy mają dziś wiele wspólnych interesów\". Konsultacje rządów w Pradze", "Unia Europejska i Stany Zjednoczone potępiły atak Iranu na Izrael", "\"To zaszczyt iż Senat  może opiekować się Polonią i Polakami za granicą\". Obrady Polonijnej Rady Konsultacyjnej"])'>
+                        Export to JSON
+                    </button>
+                </div>
             
                 <div class="article">
                     Senat wspiera Polonię. Ruszył konkurs ofert SENAT–POLONIA 2025
@@ -417,8 +473,16 @@
                 </div>
                 </div>
             <div class="class-container">
-                <div class="class-name">Class: date</div>
-                <div class="stats">Number of articles: 12</div>
+                <div class="class-header">
+                    <div class="class-info">
+                        <div class="class-name">Class: date</div>
+                        <div class="stats">Number of articles: 12</div>
+                    </div>
+                    <button class="export-button" 
+                            onclick='exportClass("date", ["15.12.2024 12:47", "08.12.2024 14:58", "30.11.2024 20:51", "23.11.2024 15:55", "17.11.2024 12:35", "08.11.2024 16:04", "02.11.2024 21:36", "28.10.2024 12:37", "19.10.2024 10:00", "12.10.2024 08:15", "04.10.2024 22:00", "28.09.2024 08:50"])'>
+                        Export to JSON
+                    </button>
+                </div>
             
                 <div class="article">
                     15.12.2024 12:47
@@ -469,8 +533,16 @@
                 </div>
                 </div>
             <div class="class-container">
-                <div class="class-name">Class: first</div>
-                <div class="stats">Number of articles: 7</div>
+                <div class="class-header">
+                    <div class="class-info">
+                        <div class="class-name">Class: first</div>
+                        <div class="stats">Number of articles: 7</div>
+                    </div>
+                    <button class="export-button" 
+                            onclick='exportClass("first", ["Kanały internetoweSerwisy historyczne", "Studio reportażui dokumentu polskiego radia", "Agencja ReklamyAgencja MuzycznaAgencja PromocjiStudia NagranioweZamówienia publiczneZasady kampanii społecznych", "Agencja Reklamy", "InformacyjnaAgencja RadiowaDla mediów", "Polityka prywatnościDane osobowe", "Pobierz aplikację mobilną:"])'>
+                        Export to JSON
+                    </button>
+                </div>
             
                 <div class="article">
                     Kanały internetoweSerwisy historyczne
